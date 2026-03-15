@@ -1,0 +1,8 @@
+title: Group 56 ML Project
+description: Benito K, Sritha B, Japleen K, Arsh S, and Aasa D
+show_downloads: false
+sass:
+  style: compressed
+plugins:
+  - jekyll-seo-tag
+repository: bkarkada/group56_pages

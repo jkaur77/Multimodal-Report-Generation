@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+
+{% seo %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    {% include head-custom.html %}
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-brand" href="{{ '/' | relative_url }}">Group 56</a>
+        <div class="nav-links">
+          <a class="nav-link{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}" href="{{ '/' | relative_url }}">Home</a>
+          <a class="nav-link{% if page.url == '/proposal.html' %} active{% endif %}" href="{{ '/proposal.html' | relative_url }}">Proposal</a>
+          <a class="nav-link{% if page.url == '/midterm.html' %} active{% endif %}" href="{{ '/midterm.html' | relative_url }}">Midterm Report</a>
+          <a class="nav-link{% if page.url == '/final.html' %} active{% endif %}" href="{{ '/final.html' | relative_url }}">Final Report</a>
+        </div>
+      </nav>
+      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+      <p class="project-tagline">{{ page.description | default: site.description | default: "Benito K, Sritha B, Japleen K, Arsh S, and Aasa D" }}</p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      {{ content }}
+    </main>
+
+    {% if page.section_nav %}
+    <script>
+      (function() {
+        const nav = document.querySelector('.section-nav');
+        if (!nav) return;
+        const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+        const headings = links
+          .map(link => document.getElementById(link.getAttribute('href').slice(1)))
+          .filter(Boolean);
+
+        // force activation on click
+        links.forEach(link => {
+          link.addEventListener('click', () => {
+            const id = link.getAttribute('href').slice(1);
+            activateLink(id);
+          });
+        });
+
+        // smooth scroll
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = link.getAttribute('href').slice(1);
+            document.getElementById(id).scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+            activateLink(id); // highlight immediately
+          });
+        });
+
+        activateLink(headings[0].id);
+
+        const observer = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a, b) => a.target.offsetTop - b.target.offsetTop);
+          if (visible.length) {
+            activateLink(visible[0].target.id);
+            return;
+          }
+          const above = entries
+            .filter(entry => entry.boundingClientRect.top < 0)
+            .sort((a, b) => b.target.offsetTop - a.target.offsetTop);
+          if (above.length) {
+            activateLink(above[0].target.id);
+          }
+        }, { rootMargin: '0px 0px -65% 0px', threshold: [0, 1] });
+
+        headings.forEach(heading => observer.observe(heading));
+      })();
+    </script>
+    {% endif %}
+  </body>
+</html>
